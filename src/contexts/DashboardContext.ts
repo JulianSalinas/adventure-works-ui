@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { DashboardOptions } from "../models/DashboardOptions";
 import { DashboardRoute } from "../models/DashboardRoute";
-import dashboardRoutes from "../dashboard/DashboardRoutes";
+import dashboardRoutes from "../app/DashboardRoutes";
 
 export const defaultDashboardOptions: DashboardOptions = {
   isDrawerOpen: false,
@@ -9,9 +9,9 @@ export const defaultDashboardOptions: DashboardOptions = {
   dashboardType: "modern",
   drawerAvatar: "img-avatar-ganyu.jpg",
   drawerBackground: "img-reimu.jpg",
-  // customGradient: "linear-gradient(to right, #FF4B2B, #FF416C)",
-  customGradient: "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)",
-  customTransition: "all 0.5s",
+  customGradient: "linear-gradient(to right, #FF4B2B, #FF416C)",
+  //customGradient: "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)",
+  customTransition: "all 0.3s",
 };
 
 export type DashboardContextType = {

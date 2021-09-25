@@ -1,23 +1,39 @@
 import { ExitToAppOutlined } from "@mui/icons-material";
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Avatar, Box, Drawer, IconButton, Theme, Toolbar, Typography } from "@mui/material";
 import { SxProps } from "@mui/system";
 import { useDashboardContext } from "../contexts/DashboardContext";
-import ModernDashboardMenu from "./ModernDashboardMenu";
+import SettingsView from "../views/settings/SettingsView";
+import { ModernDashboardItem, ModernDashboardMenu } from "./ModernDashboardMenu";
 import './ModernDashboardStyles.css';
 
-const ExitAppButton = () => {
+
+const ModernExitButton = () => {
 
   const { dashboardOptions } = useDashboardContext();
 
   return (
-    <Box className={"item"} sx={{ display: "flex", gap: 4, pl: 3, py: 2 }}>
-      <ExitToAppOutlined sx={{ fill: "white"}} />
+    <ModernDashboardItem>
+      <ExitToAppOutlined sx={{ fill: "white" }} />
       <Typography hidden={!dashboardOptions.isDrawerOpen}>{"Exit"}</Typography>
-    </Box>
+    </ModernDashboardItem>
   );
 
-}
+};
+
+const ModernDrawerButton = () => {
+
+  const { dashboardOptions, setIsDrawerOpen } = useDashboardContext();
+
+  return (
+    <ModernDashboardItem>
+      <Box onClick={() => setIsDrawerOpen(!dashboardOptions.isDrawerOpen)}>
+        <MenuIcon sx={{ fill: "white" }}/>
+      </Box>
+    </ModernDashboardItem>
+  );
+
+};
 
 const ModernToolbar = () => {
 
@@ -26,7 +42,7 @@ const ModernToolbar = () => {
   return (
     <Toolbar variant={"regular"} disableGutters={true} sx={{ pl: 2 }}>
       <IconButton sx={{ color: "white" }} onClick={() => setIsDrawerOpen(!dashboardOptions.isDrawerOpen)}>
-          <MenuIcon/>
+        <MenuIcon/>
       </IconButton>
     </Toolbar>
   );
@@ -39,9 +55,9 @@ const ModernAvatar = () => {
   const drawerAvatar = require(`../assets/images/${dashboardOptions.drawerAvatar}`).default;
 
   const containerStyles: SxProps<Theme> = {
-    height: dashboardOptions.isDrawerOpen ? 164 : 36, 
+    height: dashboardOptions.isDrawerOpen ? 196 : 36, 
     display: "flex", 
-    alignItems: "start", 
+    alignItems: "center", 
     justifyContent: "center", 
     transition: dashboardOptions.customTransition
   }
@@ -62,20 +78,17 @@ const ModernAvatar = () => {
 
 const ModernOptions = () => {
 
-  const { dashboardOptions } = useDashboardContext();
-
   const containerStyles: SxProps<Theme> = {
+    height: "100%",
     display: "flex", 
-    flex: 1, 
     flexDirection: "column", 
     justifyContent: "space-between",
-    transition: dashboardOptions.customTransition
   }
 
   return (
     <Box sx={containerStyles}>
       <ModernDashboardMenu />
-      <ExitAppButton />
+      <ModernExitButton />
     </Box>
   );
 
@@ -86,35 +99,45 @@ const ModernDashboard = () => {
   const { dashboardOptions } = useDashboardContext();
   const drawerBackground = require(`../assets/images/${dashboardOptions.drawerBackground}`).default;
 
-  const drawerPaperStyles: SxProps<Theme> = {
-    border: "none",
-    overflow: "hidden",
-    width: dashboardOptions.isDrawerOpen ? dashboardOptions.drawerWidth : 72,
+  const drawerStyles: SxProps<Theme> = {
     transition: dashboardOptions.customTransition,
+    width: {
+      xs: dashboardOptions.isDrawerOpen ? "100%" : 0,
+      sm: dashboardOptions.isDrawerOpen ? dashboardOptions.drawerWidth : 72,
+    }
+  };
+
+  const drawerContainerStyles: SxProps<Theme> = {
+    // display: { sm: "flex", xs: "none" }, 
+    flexShrink: 0,
+    ...drawerStyles
+  };
+
+  const drawerPaperStyles: SxProps<Theme> = {
     backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1)), url(${drawerBackground})`,
-  }
+    border: "none",
+    overflowX: "hidden",
+    ...drawerStyles,
+  };
   
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "row" }}>
+
       <AppBar position={"fixed"} sx={{ display: { sm: 'none', xs: 'block' } }}>
         <ModernToolbar />
       </AppBar>
 
-      <Drawer variant={"permanent"} PaperProps={{ sx: drawerPaperStyles }} sx={{ display: { sm: 'block', xs: 'none' } }}>
-        <ModernToolbar />
-        <ModernAvatar />
-        <ModernOptions />
-      </Drawer>
+      <Box component="nav" sx={ drawerContainerStyles }>
+        <Drawer variant={"permanent"} PaperProps={{ sx: drawerPaperStyles }}>
+          <ModernDrawerButton />
+          <ModernAvatar />
+          <ModernOptions />
+        </Drawer>
+      </Box>
 
-      <main style={{ flexGrow: 1 }}>
-        <div style={{
-            // [props.theme.breakpoints.down("sm")]: {
-            //     ...props.theme.mixins.toolbar,
-            // }
-        }} />
-        {/* <DashboardRouter/> */}
-        {/* <Manager/> */}
-      </main>
+      <Box component="main" sx={{ flexGrow: 1, backgroundColor: "red" }}>
+        <SettingsView />
+      </Box>
 
     </Box>
   );

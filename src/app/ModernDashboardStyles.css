@@ -9,8 +9,11 @@
 .item {
   color: #FFF;
   display: block;
-  padding: 8px;
   text-decoration: none;
+}
+
+.item-active {
+  color: #FFF;
 }
 
 .item:hover {
