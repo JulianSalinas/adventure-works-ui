@@ -9,7 +9,7 @@ const DashboardTemplate = () => {
 
   // Removes file's extension to match its type
   const file = type[0].toUpperCase() + type.slice(1, type.length);  
-  const Component = require(`./${file}Dashboard`).default;
+  const Component = require(`./${type}-dashboard/${file}Dashboard`).default;
 
   function setIsDrawerOpen(isDrawerOpen: boolean) {
     dashboardOptions.isDrawerOpen = isDrawerOpen;
