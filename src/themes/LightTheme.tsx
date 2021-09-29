@@ -1,14 +1,18 @@
 import { createTheme, Theme } from "@mui/material";
+import { orange } from '@mui/material/colors';
 
 let lightTheme: Theme = createTheme({
   palette: {
     mode: "light",
     primary: { 
-      main: "#212121"
+      main: orange[700]
     },
     secondary: { 
       main: "#FF416C",
     },
+    text: {
+      primary: "#000"
+    }
   },
 });
 

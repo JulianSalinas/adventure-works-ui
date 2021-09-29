@@ -1,14 +1,18 @@
 import { createTheme, Theme } from "@mui/material";
+import { orange } from '@mui/material/colors';
 
 let darkTheme: Theme = createTheme({
   palette: {
     mode: "dark",
     primary: { 
-      main: "#009688" 
+      main: orange[700]
     },
     secondary: { 
       main: "#76608A"
     },
+    text: {
+      primary: "#FFF"
+    }
   },
 });
 

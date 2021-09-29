@@ -6,6 +6,7 @@ import { useDashboardContext } from "../../contexts/DashboardContext";
 import { DashboardSwitch } from "../DashboardSwitch";
 import { ModernMenuItem } from "./ModernMenuItem";
 import { ModernMenu } from "./ModernMenu";
+import Header from "../../components/Header";
 
 
 const ModernExitButton = () => {
@@ -15,7 +16,7 @@ const ModernExitButton = () => {
   return (
     <ModernMenuItem>
       <ExitToAppOutlined sx={{ fill: "white" }} />
-      <Typography hidden={!dashboardOptions.isDrawerOpen}>{"Exit"}</Typography>
+      <Typography hidden={!dashboardOptions.isDrawerOpen} sx={{ color: "white" }}>{"Exit"}</Typography>
     </ModernMenuItem>
   );
 
@@ -133,13 +134,16 @@ const ModernDashboard = () => {
       <Box component="nav" sx={ drawerContainerStyles }>
         <Drawer variant={"permanent"} PaperProps={{ sx: drawerPaperStyles }}>
           <ModernDrawerButton />
-          <ModernAvatar />
+          { dashboardOptions.drawerAvatar ? <ModernAvatar /> : <Box /> }
           <ModernOptions />
         </Drawer>
       </Box>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 8 }}>
-        <DashboardSwitch />
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <Header />
+        <Box component="main" sx={{ px: 8 }}>
+          <DashboardSwitch />
+        </Box>
       </Box>
 
     </Box>

@@ -11,7 +11,7 @@ export const defaultDashboardOptions: DashboardOptions = {
   drawerBackground: "img-reimu.jpg",
   customGradient: "linear-gradient(to right, #FF4B2B, #FF416C)",
   //customGradient: "linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)",
-  customTransition: "all 0.3s",
+  customTransition: "width 0.3s",
 };
 
 export type DashboardContextType = {
