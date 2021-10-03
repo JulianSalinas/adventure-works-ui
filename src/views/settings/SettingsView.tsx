@@ -1,23 +1,14 @@
-import { Box, createTheme, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useCustomThemeContext } from "../../contexts/CustomThemeContext";
 import { CustomTheme } from "../../models/CustomTheme";
 import customThemes from "../../themes/CustomThemes";
-import darkMUIThemeTemplate from "../../themes/DarkMUIThemeTemplate";
-import lightMUIThemeTemplate from "../../themes/LightMUIThemeTemplate";
 import { themeModes } from "./../../themes/ThemeMode";
 import CustomThemeOption from "./CustomThemeOption";
 import ThemeModeOption from "./ThemeModeOption";
 
 const SettingsView = () => {
 
-  const { themeMode, setThemeMode, customTheme, setCustomTheme, setMUITheme } = useCustomThemeContext();
-
-  const onThemeModeSelected = (mode: string): void => {
-    setThemeMode(mode);
-    let template = mode === "light" ? lightMUIThemeTemplate : darkMUIThemeTemplate;
-    let muiTheme = createTheme({ ...template });
-    setMUITheme(muiTheme);
-  };
+  const { themeMode, setThemeMode, customTheme, setCustomTheme } = useCustomThemeContext();
 
   const renderCustomThemeType = (theme: CustomTheme) => (
     <CustomThemeOption
@@ -35,7 +26,7 @@ const SettingsView = () => {
       key={mode}
       themeMode={mode}
       isSelected={mode === themeMode}
-      onSelected={() => onThemeModeSelected(mode)}
+      onSelected={() => setThemeMode(mode)}
     />
   );
 
