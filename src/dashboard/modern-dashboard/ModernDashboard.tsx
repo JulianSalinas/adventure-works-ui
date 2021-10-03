@@ -2,21 +2,22 @@ import { ExitToAppOutlined } from "@mui/icons-material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Avatar, Box, Drawer, IconButton, Theme, Toolbar, Typography } from "@mui/material";
 import { SxProps } from "@mui/system";
+import Header from "../../components/Header";
+import { useCustomThemeContext } from "../../contexts/CustomThemeContext";
 import { useDashboardContext } from "../../contexts/DashboardContext";
 import { DashboardSwitch } from "../DashboardSwitch";
-import { ModernMenuItem } from "./ModernMenuItem";
 import { ModernMenu } from "./ModernMenu";
-import Header from "../../components/Header";
+import { ModernMenuItem } from "./ModernMenuItem";
 
 
 const ModernExitButton = () => {
 
-  const { dashboardOptions } = useDashboardContext();
+  const { isDrawerOpen } = useDashboardContext();
 
   return (
     <ModernMenuItem>
       <ExitToAppOutlined sx={{ fill: "white" }} />
-      <Typography hidden={!dashboardOptions.isDrawerOpen} sx={{ color: "white" }}>{"Exit"}</Typography>
+      <Typography hidden={!isDrawerOpen} sx={{ color: "white" }}>{"Exit"}</Typography>
     </ModernMenuItem>
   );
 
@@ -24,11 +25,11 @@ const ModernExitButton = () => {
 
 const ModernDrawerButton = () => {
 
-  const { dashboardOptions, setIsDrawerOpen } = useDashboardContext();
+  const { isDrawerOpen, setIsDrawerOpen } = useDashboardContext();
 
   return (
     <ModernMenuItem>
-      <Box onClick={() => setIsDrawerOpen(!dashboardOptions.isDrawerOpen)}>
+      <Box onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
         <MenuIcon sx={{ fill: "white" }}/>
       </Box>
     </ModernMenuItem>
@@ -38,11 +39,11 @@ const ModernDrawerButton = () => {
 
 const ModernToolbar = () => {
 
-  const { dashboardOptions, setIsDrawerOpen } = useDashboardContext();
+  const { isDrawerOpen, setIsDrawerOpen } = useDashboardContext();
 
   return (
     <Toolbar variant={"regular"} disableGutters={true} sx={{ pl: 2 }}>
-      <IconButton sx={{ color: "white" }} onClick={() => setIsDrawerOpen(!dashboardOptions.isDrawerOpen)}>
+      <IconButton sx={{ color: "white" }} onClick={() => setIsDrawerOpen(!isDrawerOpen)}>
         <MenuIcon/>
       </IconButton>
     </Toolbar>
@@ -52,21 +53,22 @@ const ModernToolbar = () => {
 
 const ModernAvatar = () => {
 
-  const { dashboardOptions } = useDashboardContext();
-  const drawerAvatar = require(`../../assets/images/${dashboardOptions.drawerAvatar}`).default;
+  const { customTheme } = useCustomThemeContext();
+  const { isDrawerOpen } = useDashboardContext();
+  const drawerAvatar = require(`../../assets/images/${customTheme.drawerAvatar}`).default;
 
   const containerStyles: SxProps<Theme> = {
     display: "flex", 
     alignItems: "center", 
     justifyContent: "center", 
-    height: dashboardOptions.isDrawerOpen ? 196 : 36, 
-    transition: dashboardOptions.customTransition
+    height: isDrawerOpen ? 196 : 36, 
+    transition: customTheme.transitionEffect
   }
 
   const avatarStyles: SxProps<Theme> = {
-    height: dashboardOptions.isDrawerOpen ? 128 : 28,
-    width: dashboardOptions.isDrawerOpen ? 128 : 28, 
-    transition: dashboardOptions.customTransition
+    height: isDrawerOpen ? 128 : 28,
+    width: isDrawerOpen ? 128 : 28, 
+    transition: customTheme.transitionEffect
   }
 
   return (
@@ -97,14 +99,15 @@ const ModernOptions = () => {
 
 const ModernDashboard = () => {
 
-  const { dashboardOptions } = useDashboardContext();
-  const drawerBackground = require(`../../assets/images/${dashboardOptions.drawerBackground}`).default;
+  const { customTheme } = useCustomThemeContext();
+  const { isDrawerOpen } = useDashboardContext();
+  const drawerBackground = require(`../../assets/images/${customTheme.drawerBackground}`).default;
 
   const drawerStyles: SxProps<Theme> = {
-    transition: dashboardOptions.customTransition,
+    transition: customTheme.transitionEffect,
     width: {
-      xs: dashboardOptions.isDrawerOpen ? "100%" : 0,
-      sm: dashboardOptions.isDrawerOpen ? dashboardOptions.drawerWidth : 72,
+      xs: isDrawerOpen ? "100%" : 0,
+      sm: isDrawerOpen ? customTheme.drawerWidth : 72,
     }
   };
 
@@ -134,7 +137,7 @@ const ModernDashboard = () => {
       <Box component="nav" sx={ drawerContainerStyles }>
         <Drawer variant={"permanent"} PaperProps={{ sx: drawerPaperStyles }}>
           <ModernDrawerButton />
-          { dashboardOptions.drawerAvatar ? <ModernAvatar /> : <Box /> }
+          { customTheme.drawerAvatar ? <ModernAvatar /> : <Box /> }
           <ModernOptions />
         </Drawer>
       </Box>

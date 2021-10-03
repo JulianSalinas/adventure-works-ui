@@ -1,23 +1,25 @@
 import { Box } from "@mui/material";
 import { SxProps, Theme } from "@mui/system";
+import { useCustomThemeContext } from "../../contexts/CustomThemeContext";
 import { useDashboardContext } from "../../contexts/DashboardContext";
 import "./ModernStyles.css";
 
 export const ModernMenuItem: React.FunctionComponent<{}> = ({ children }) => {
 
-  const { dashboardOptions } = useDashboardContext();
+  const { customTheme } = useCustomThemeContext();
+  const { isDrawerOpen } = useDashboardContext();
 
   const containerStyles: SxProps<Theme> = {
     display: "flex",
     alignItems: "center",
-    justifyContent: dashboardOptions.isDrawerOpen ? "start" : "center",
-    transition: dashboardOptions.customTransition,
+    justifyContent: isDrawerOpen ? "start" : "center",
+    transition: customTheme.transitionEffect,
   };
 
   const spacingStyles: SxProps<Theme> = {
     gap: 4,
     paddingY: 2,
-    paddingLeft: dashboardOptions.isDrawerOpen ? 4 : 0,
+    paddingLeft: isDrawerOpen ? 4 : 0,
   };
 
   return (

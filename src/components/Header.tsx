@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { useUserIdentityContext } from '../contexts/UserIdentityContext';
 
 function getInitials(name: string): string {
-  if (!name || name.length == 0) return "#";
+  if (!name || name.length === 0) return "#";
   let parts = name.replaceAll(/\s+/ig, " ").split(" ");
   let initials = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
   return initials.toUpperCase();

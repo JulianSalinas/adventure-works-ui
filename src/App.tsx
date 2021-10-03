@@ -1,12 +1,12 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import dashboardRoutes from "./app/DashboardRoutes";
-import DashboardTemplate from "./app/DashboardTemplate";
-import { CustomThemeContext } from "./contexts/CustomThemeContext";
-import { DashboardContext, defaultDashboardOptions } from "./contexts/DashboardContext";
+import DashboardTemplate from "./dashboard/DashboardTemplate";
+import { CustomThemeContext, CustomThemeContextType } from "./contexts/CustomThemeContext";
 import { defaultUserIdentity, UserIdentityContext } from "./contexts/UserIdentityContext";
-import lightTheme from "./themes/LightTheme";
+import { defaultCustomTheme } from "./themes/CustomThemes";
+import lightMUIThemeTemplate from "./themes/LightMUIThemeTemplate";
+import darkMUIThemeTemplate from "./themes/DarkMUIThemeTemplate";
 
 /**
  * Not found page, as simple as it is! 
@@ -38,12 +38,50 @@ const AppRouter = () => {
  */
 function App() {
 
-  const [theme, setTheme] = useState(lightTheme);
+  const [themeMode, setThemeMode] = useState("dark");
+
+  const [muiTheme, setMUITheme] = useState(lightMUIThemeTemplate);
+  const [customTheme, setCustomTheme] = useState(defaultCustomTheme);
   const [userIdentity, setUserIdentity] = useState(defaultUserIdentity);
 
+  const customThemeProps: CustomThemeContextType = { 
+    muiTheme, 
+    setMUITheme, 
+    customTheme, 
+    setCustomTheme, 
+    themeMode, 
+    setThemeMode 
+  };
+  
+  useEffect(() => {
+    
+    console.log("Theme mode", themeMode);
+    
+    let listener = (e: MediaQueryListEvent) => {
+      let template = e.matches ? darkMUIThemeTemplate : lightMUIThemeTemplate;
+      let theme = createTheme({ ...template });
+      setMUITheme(theme);
+    };
+
+    if(themeMode === "system") {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listener);
+    }
+    else {
+      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
+    }
+
+    // let template = matches ? darkMUIThemeTemplate : lightMUIThemeTemplate;
+    // let theme = createTheme({ ...template });
+    // setMUITheme(theme);
+
+    // return window.matchMedia('(prefers-color-scheme: dark)')
+    //   .removeEventListener('change', modeListener);
+
+  }, [themeMode]);
+
   return (
-    <CustomThemeContext.Provider value={{ theme, setTheme }}>
-      <ThemeProvider theme={theme}>
+    <CustomThemeContext.Provider value={customThemeProps}>
+      <ThemeProvider theme={muiTheme}>
         <UserIdentityContext.Provider value={{ userIdentity, setUserIdentity }}>
           <CssBaseline />
           <AppRouter />

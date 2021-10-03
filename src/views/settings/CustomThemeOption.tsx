@@ -2,18 +2,17 @@ import { Box, Paper, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { FC, PropsWithChildren } from 'react';
 
-
-interface IThemeItem {
+interface ICustomThemeOption {
+  themeName: string;
+  themeImage?: string;
+  background?: string;
   isSelected: boolean,
-  name: string;
-  background: string;
-  backgroundImage: string;
   onSelected: () => void
 }
 
-const ThemeItem: FC<IThemeItem> = (props: PropsWithChildren<IThemeItem>) => {
+const CustomThemeOption: FC<ICustomThemeOption> = (props: PropsWithChildren<ICustomThemeOption>) => {
 
-  const backgroundImage = require(`../../assets/images/${props.backgroundImage}`).default
+  const backgroundImage = props.themeImage ? require(`../../assets/images/${props.themeImage}`).default : null;
 
   return (
     <Paper elevation={2} onClick={props.onSelected} sx={{
@@ -29,8 +28,7 @@ const ThemeItem: FC<IThemeItem> = (props: PropsWithChildren<IThemeItem>) => {
         position: "relative",
         width: 120,
         height: 70,
-        borderRadius: 1,
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
         backgroundSize: "cover"
       }}>
 
@@ -46,11 +44,11 @@ const ThemeItem: FC<IThemeItem> = (props: PropsWithChildren<IThemeItem>) => {
       </Box>
 
       <Typography sx={{ fontWeight: "light"}}>
-        {props.name}
+        {props.themeName}
       </Typography>
 
     </Paper>
   );
 }
 
-export default ThemeItem;
+export default CustomThemeOption;
